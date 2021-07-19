@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,10 +28,18 @@ const App = () => {
   // use state
   const [frontCamRec, setFrontCamRec] = useState(true);
   const [downloadLink, setDownloadLink] = useState("#");
+  const [isMobile, setIsMobile] = useState(false);
   const [constraintObj, setConstraintObj] = useState({
     audio: true,
     video: true,
   });
+
+  useEffect(() => {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      // true for mobile device
+      setIsMobile(true);
+    }
+  }, [])
 
   const startSystem = () => {
     {
@@ -160,21 +168,21 @@ const App = () => {
     return (
       <section>
         <div className="wrapper mt-4">
-          <div className="button-social" onClick={()=>window.location.assign("https://www.instagram.com/vishesh22_17/")}>
+          <div className="button-social" onClick={() => window.location.assign("https://www.instagram.com/vishesh22_17/")}>
             <div className="icon">
               <i className="fab fa-instagram"></i>
             </div>
             <span>Instagram</span>
           </div>
 
-          <div className="button-social mx-2" onClick={()=>window.location.assign("https://www.linkedin.com/in/vishesh-vgr/")}>
+          <div className="button-social mx-2" onClick={() => window.location.assign("https://www.linkedin.com/in/vishesh-vgr/")}>
             <div className="icon">
               <i className="fab fa-linkedin"></i>
             </div>
             <span>Linkedin</span>
           </div>
 
-          <div className="button-social" onClick={()=>window.location.assign("https://github.com/VisheshVGR")}>
+          <div className="button-social" onClick={() => window.location.assign("https://github.com/VisheshVGR")}>
             <div className="icon">
               <i className="fab fa-github"></i>
             </div>
@@ -223,7 +231,7 @@ const App = () => {
                     <h4><i className="fas fa-camera"></i> Camera Recording</h4>
                   </Col>
                   <Col className="d-flex justify-content-center">
-                    <Button variant="outline-primary" onClick={() => setFrontCamRec(!frontCamRec)}>{frontCamRec ? <i className="fas fa-toggle-on"></i> : <i className="fas fa-toggle-off"></i>}</Button>
+                    <Button variant="outline-primary" disabled={isMobile} onClick={() => setFrontCamRec(!frontCamRec)}>{frontCamRec ? <i className="fas fa-toggle-on"></i> : <i className="fas fa-toggle-off"></i>}</Button>
                   </Col>
                 </Row>
                 <Row className="my-2">
@@ -231,7 +239,7 @@ const App = () => {
                     <h4><i className="fas fa-desktop"></i> Screen Capture</h4>
                   </Col>
                   <Col className="d-flex justify-content-center">
-                    <Button variant="outline-primary" onClick={() => { setFrontCamRec(!frontCamRec); setConstraintObj({ audio: false, video: constraintObj.video }) }}>{frontCamRec ? <i className="fas fa-toggle-off"></i> : <i className="fas fa-toggle-on"></i>}</Button>
+                    <Button variant="outline-primary" disabled={isMobile} onClick={() => { setFrontCamRec(!frontCamRec); setConstraintObj({ audio: false, video: constraintObj.video }) }}>{frontCamRec ? <i className="fas fa-toggle-off"></i> : <i className="fas fa-toggle-on"></i>}</Button>
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -243,11 +251,11 @@ const App = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col className="d-flex justify-content-center h6 mt-4 grey text-muted`">*Only audio recording not supported!</Col>
+                  <Col className="d-flex flex-column align-items-center h6 mt-4 grey text-muted`">*Only audio recording not supported!{isMobile && <div><br/>*Screen Capture not supported by Mobile Device</div>}</Col>
                 </Row>
               </Container>
 
-              <Social/>
+              <Social />
 
             </div>
 
